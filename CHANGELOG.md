@@ -1,3 +1,6 @@
+## 2.0.2 (2025-09-27)
+* Android 16 (16KB page size support)
+
 ## 1.9.2 (2025-03-15)
 * Upgrade libfreetype to 2.13.3
   * It is a security update, see [here](https://nvd.nist.gov/vuln/detail/CVE-2025-27363) for more details.

@@ -1,4 +1,4 @@
-# PdfiumAndroid - SDK 35 / Android 15 Compatible
+# PdfiumAndroid - SDK 36 / Android 16 Compatible
 
 This repository is a fork of [meganz/PdfiumAndroid](https://github.com/meganz/PdfiumAndroid), which itself is based on [barteksc/PdfiumAndroid](https://github.com/barteksc/PdfiumAndroid).
 
@@ -6,11 +6,11 @@ This repository is a fork of [meganz/PdfiumAndroid](https://github.com/meganz/Pd
 
 This fork is updated to **SDK 35 / NDK 28** and delivers a working AAR compatible with **Android 15 (16KB page size support)**.
 
-**Version 2.0.0** - Significant updates to the build layer and compatibility improvements warrant a major version bump from the original 1.9.0.
+**Version 2.0.2** - Significant updates to the build layer and compatibility improvements warrant a major version bump from the original 1.9.0.
 
 ### Key Updates:
 - **Android SDK 36** and **NDK 28** compatibility
-- **Android Gradle Plugin 8.12.0** support
+- **Android Gradle Plugin 8.13.0** support
 - **Java 17** requirement (configured via `gradle.properties`)
 - **BuildConfig generation** fixed for library modules
 - **Native library packaging** corrected in AAR
@@ -19,7 +19,7 @@ This fork is updated to **SDK 35 / NDK 28** and delivers a working AAR compatibl
 
 ## Requirements
 
-- **Java 17+** (required for AGP 8.12.0+)
+- **Java 17+** (required for AGP 8.13.0+)
 - **Android NDK 28.2.13676358**
 - **Git Bash** (for Windows users)
 - **Ninja build tool** - https://github.com/ninja-build/ninja/releases
@@ -56,11 +56,11 @@ Remark: you might need to update the 'javaHome' environment variable in the `gra
 ## Using in Your Project
 
 ### Method 1: Local AAR
-1. Copy `PdfiumAndroid-2.0.0-release.aar` to your app's `libs/` folder
+1. Copy `PdfiumAndroid-2.0.2-release.aar` to your app's `libs/` folder
 2. Add to your app's `build.gradle`:
 ```groovy
 dependencies {
-    implementation files('libs/PdfiumAndroid-2.0.0-release.aar')
+    implementation files('libs/PdfiumAndroid-2.0.2-release.aar')
     implementation 'androidx.core:core:1.16.0'
 }
 ```
@@ -94,7 +94,7 @@ PdfDocument pdfDocument = pdfiumCore.newDocument(parcelFileDescriptor);
 ## Changes Made
 
 ### Build System Updates
-- Updated `build.gradle` for AGP 8.9.2 compatibility
+- Updated `build.gradle` for AGP 8.13.0 compatibility
 - Added `buildFeatures { buildConfig = true }`
 - Added `buildConfigField` for `VERSION_NAME`
 - Fixed `jniLibs.srcDir` path for native libraries
