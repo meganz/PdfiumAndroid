@@ -72,7 +72,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.aiuspaktyn:PdfiumAndroid:2.0.1'
+    implementation 'com.github.aiuspaktyn:PdfiumAndroid:2.0.2'
 }
 ```
 
