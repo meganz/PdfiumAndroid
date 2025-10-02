@@ -1,50 +1,27 @@
 buildscript {
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.android.tools.build:gradle:8.13.0'
     }
 }
 
 apply plugin: 'com.android.library'
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'pdfium-android'
-
-    publishedGroupId = 'com.github.barteksc'
-    libraryName = 'PdfiumAndroid'
-    artifact = 'pdfium-android'
-
-    libraryDescription = 'Fork of library for rendering PDFs on Android\'s Surface or Bitmap'
-
-    siteUrl = 'https://github.com/barteksc/PdfiumAndroid'
-    gitUrl = 'https://github.com/barteksc/PdfiumAndroid.git'
-
-    libraryVersion = '1.9.0'
-
-    developerId = 'barteksc'
-    developerName = 'Bartosz Schiller'
-    developerEmail = 'barteksch@boo.pl'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
+apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 26
+    namespace = 'com.shockwave.pdfium'
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.9.0"
+        minSdkVersion 23
+        targetSdkVersion 36
+        versionCode 3
+        versionName "2.0.2"
+        buildConfigField "String", "VERSION_NAME", "\"${versionName}\""
     }
     buildTypes {
         release {
@@ -53,23 +30,52 @@ android {
         }
     }
 
-    sourceSets{
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
         main {
             jni.srcDirs = []
-            jniLibs.srcDir 'src/main/libs'
+            jniLibs.srcDir 'src/main/jni/lib'
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+
+    ndkVersion = '28.2.13676358'
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    // Configure AAR filename to include version
+    libraryVariants.configureEach { variant ->
+        variant.outputs.all {
+            outputFileName = "PdfiumAndroid-${defaultConfig.versionName}-${variant.buildType.name}.aar"
+        }
+    }
+
+    publishing {
+        // Configura la pubblicazione per la variante 'release'
+        singleVariant('release') {}
     }
 }
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'androidx.core:core:1.17.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }
-
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

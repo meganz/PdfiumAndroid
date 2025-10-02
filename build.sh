@@ -1,7 +1,8 @@
 #!/bin/bash -i
 
-# This scrip can be used to build PdfiumAndroid library and its dependent libraries(libpng and libfreetype2).
+# This script can be used to build PdfiumAndroid library (libjniPdfium) and its dependent libraries(libpng and libfreetype2).
 
+export NDK_ROOT=/d/Android/ndk/28.2.13676358
 
 export BUILD_ROOT="builddir"
 rm -fr ${BUILD_ROOT}
@@ -32,7 +33,7 @@ build_libpng() {
     for ABI in ${BUILD_ARCHS}; do
         export BUILD_DIR=${BUILD_ROOT}/libpng/${ABI}
         rm -fr ${BUILD_DIR} &&
-        cmake -B ${BUILD_DIR} -S libpng \
+        cmake -G "Ninja" -B ${BUILD_DIR} -S libpng \
             -DCMAKE_ANDROID_NDK=${NDK_ROOT} \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_ANDROID_ARCH_ABI=${ABI} \
@@ -60,7 +61,7 @@ build_libfreetype2() {
     for ABI in ${BUILD_ARCHS}; do
         export BUILD_DIR=${BUILD_ROOT}/${SRC_DIR}/${ABI}
         rm -fr ${BUILD_DIR} &&
-        cmake -B ${BUILD_DIR} -S ${SRC_DIR} \
+        cmake -G "Ninja" -B ${BUILD_DIR} -S ${SRC_DIR} \
             -DCMAKE_ANDROID_NDK=${NDK_ROOT} \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_ANDROID_ARCH_ABI=${ABI} \
@@ -80,7 +81,7 @@ build_libfreetype2() {
 build_pdfiumAndroid() {
 
     for ABI in ${BUILD_ARCHS}; do
-        cmake -B ${BUILD_ROOT}/pdfiumAndroid/${ABI}/ \
+        cmake -G "Ninja" -B ${BUILD_ROOT}/pdfiumAndroid/${ABI}/ \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
             -DANDROID_NDK=${NDK_ROOT} \
@@ -94,6 +95,11 @@ build_pdfiumAndroid() {
 
         cmake --build ${BUILD_ROOT}/pdfiumAndroid/${ABI}/ -j10
         check_command_result "building pdfiumAndroid"
+        
+        # Copy the built libjniPdfium.so to the jni/lib directory for packaging
+        echo "Copying libjniPdfium.so for ${ABI}"
+        cp -fv ${BUILD_ROOT}/pdfiumAndroid/${ABI}/libjniPdfium.so src/main/jni/lib/${ABI}/libjniPdfium.so
+        check_command_result "copying libjniPdfium.so for ${ABI}"
     done
 }
 
