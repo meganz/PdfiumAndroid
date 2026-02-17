@@ -45,7 +45,7 @@ build_libpng() {
         check_command_result "building libpng"
 
         ls -lh ${BUILD_DIR}/*.so
-        cp ${BUILD_DIR}/libpng16.so src/main/jni/lib/${ABI}/libmodpng.so
+        cp -fv ${BUILD_DIR}/libpng16.so src/main/jni/lib/${ABI}/libmodpng.so
     done
 }
 
@@ -73,7 +73,7 @@ build_libfreetype2() {
         check_command_result "building freetype"
 
         ls -lh ${BUILD_DIR}/*.so
-        cp ${BUILD_DIR}/libfreetype.so src/main/jni/lib/${ABI}/libmodft2.so
+        cp -fv ${BUILD_DIR}/libfreetype.so src/main/jni/lib/${ABI}/libmodft2.so
     done
 }
 
@@ -94,6 +94,7 @@ build_pdfiumAndroid() {
 
         cmake --build ${BUILD_ROOT}/pdfiumAndroid/${ABI}/ -j10
         check_command_result "building pdfiumAndroid"
+        cp -fv ${BUILD_ROOT}/pdfiumAndroid/${ABI}/libjniPdfium.so src/main/jni/lib/${ABI}/
     done
 }
 
